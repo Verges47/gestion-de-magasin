@@ -1,0 +1,17 @@
+# Dossiers système
+/vendor/
+/node_modules/
+
+# Fichiers de config sensibles
+config.php
+.env
+
+# Fichiers temporaires
+*.log
+*.tmp
+
+# Fichiers système Windows
+Thumbs.db
+desktop.ini
+/dist/
+/.kilo/
