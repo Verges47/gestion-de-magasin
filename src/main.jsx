@@ -4,12 +4,13 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 
-// L'application est servie sous /jvuim/dist/ : le routeur doit être basé sur
-// ce préfixe pour que les routes (/, /connexion, /produits…) fonctionnent
-// en production comme en développement.
+// En local (XAMPP), l'app est servie sous /jvuim/dist/.
+// Sur Railway, l'app est servie à la racine du domaine.
+const basename = import.meta.env.BASE_URL === '/' ? '/' : '/jvuim/dist'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/jvuim/dist">
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </StrictMode>,
