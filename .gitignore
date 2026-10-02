@@ -3,7 +3,7 @@
 /node_modules/
 
 # Fichiers de config sensibles
-config.php
+#config.php
 .env
 
 # Fichiers temporaires
