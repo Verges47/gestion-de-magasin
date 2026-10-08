@@ -7,17 +7,10 @@ ENV RAILWAY_ENVIRONMENT=1
 ENV VITE_API_URL=/api
 RUN npm run build
 
-FROM php:8.2-apache
+FROM php:8.2-cli
 RUN docker-php-ext-install pdo pdo_mysql mysqli
-RUN rm -f /etc/apache2/mods-enabled/mpm_*.load /etc/apache2/mods-enabled/mpm_*.conf \
-    && a2enmod mpm_prefork rewrite
-COPY --from=build /app/dist/ /var/www/html/
-COPY api/ /var/www/html/api/
-COPY spa.htaccess /var/www/html/.htaccess
-
-RUN echo '<Directory /var/www/html>' > /etc/apache2/conf-available/docroot.conf \
-    && echo '    AllowOverride All' >> /etc/apache2/conf-available/docroot.conf \
-    && echo '</Directory>' >> /etc/apache2/conf-available/docroot.conf \
-    && a2enconf docroot
-
-CMD ["sh", "-c", "sed -i \"s/Listen 80/Listen ${PORT:-80}/\" /etc/apache2/ports.conf && sed -i \"s/:80>/:${PORT:-80}>/\" /etc/apache2/sites-enabled/000-default.conf && apache2-foreground"]
+WORKDIR /var/www/html
+COPY --from=build /app/dist/ ./
+COPY api/ ./api/
+COPY router.php ./router.php
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t /var/www/html /var/www/html/router.php"]
