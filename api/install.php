@@ -1,4 +1,8 @@
 <?php
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit('Interdit.');
+}
 // Script d'installation : crée la base, les tables et un premier compte
 // administrateur. À exécuter une seule fois (supprime la base existante).
 //
