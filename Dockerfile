@@ -8,7 +8,9 @@ ENV VITE_API_URL=/api
 RUN npm run build
 
 FROM php:8.2-apache
-RUN docker-php-ext-install pdo pdo_mysql mysqli && a2enmod rewrite
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN rm -f /etc/apache2/mods-enabled/mpm_*.load /etc/apache2/mods-enabled/mpm_*.conf \
+    && a2enmod mpm_prefork rewrite
 COPY --from=build /app/dist/ /var/www/html/
 COPY api/ /var/www/html/api/
 COPY spa.htaccess /var/www/html/.htaccess
